@@ -1,7 +1,3 @@
-import { Tokenizer } from './Tokenizer.js';
-import { defaults } from './defaults.js';
-import { block, inline } from './rules.js';
-import { repeatString } from './helpers.js';
 
 /**
  * smartypants text replacement
@@ -49,7 +45,7 @@ function mangle(text) {
 /**
  * Block Lexer
  */
-export class Lexer {
+class Lexer {
   constructor(options) {
     this.tokens = [];
     this.tokens.links = Object.create(null);

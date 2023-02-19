@@ -1,13 +1,7 @@
-import { defaults } from './defaults.js';
-import {
-  cleanUrl,
-  escape
-} from './helpers.js';
-
 /**
  * Renderer
  */
-export class Renderer {
+class Renderer {
   constructor(options) {
     this.options = options || defaults;
   }
@@ -194,6 +188,30 @@ export class Renderer {
       out += ` title="${title}"`;
     }
     out += this.options.xhtml ? '/>' : '>';
+    return out;
+  }
+
+  video(href, title, text) {
+    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
+    if (href === null) {
+      return text;
+    }
+
+    let out = `<video controls width="100%" alt="${text}" >
+		<source src="${href}" ></source>
+		</video>`;
+    return out;
+  }
+
+  audio(href, title, text) {
+    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
+    if (href === null) {
+      return text;
+    }
+
+    let out = `<audio controls width="100%" alt="${text}" >
+		<source src="${href}" ></source>
+		</audio>`;
     return out;
   }
 

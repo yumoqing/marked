@@ -1,4 +1,4 @@
-export function getDefaults() {
+function getDefaults() {
   return {
     async: false,
     baseUrl: null,
@@ -22,8 +22,8 @@ export function getDefaults() {
   };
 }
 
-export let defaults = getDefaults();
+let defaults = getDefaults();
 
-export function changeDefaults(newDefaults) {
+function changeDefaults(newDefaults) {
   defaults = newDefaults;
 }

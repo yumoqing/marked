@@ -1,15 +1,8 @@
-import { defaults } from './defaults.js';
-import {
-  rtrim,
-  splitCells,
-  escape,
-  findClosingBracket
-} from './helpers.js';
-
 function outputLink(cap, link, raw, lexer) {
   const href = link.href;
   const title = link.title ? escape(link.title) : null;
   const text = cap[1].replace(/\\([\[\]])/g, '$1');
+  console.log('outputLink() link=', link, '=====================');
 
   if (cap[0].charAt(0) !== '!') {
     lexer.state.inLink = true;
@@ -22,8 +15,27 @@ function outputLink(cap, link, raw, lexer) {
       tokens: lexer.inlineTokens(text)
     };
     lexer.state.inLink = false;
-    return token;
+    console.log('outputLink(): cap=', cap[0], 'return a link');
+	return token;
   }
+  /* add by yumoqing 2023-02-15 */
+  if (cap[0].startsWith('!v')){
+    console.log('outputLink(): cap=', cap[0], 'return a video');
+	return {
+		type: 'video',
+		raw, href,title,
+		text:escape(text)
+	}
+	} else if (cap[0].startsWith('!a')){
+    console.log('outputLink(): cap=', cap[0], 'return a audio');
+		return {
+			type:'audio',
+			raw, href, title,
+			text:escape(text)
+		}
+	} 
+	/* add end */
+  console.log('outputLink(): cap=', cap[0], 'return a image');
   return {
     type: 'image',
     raw,
@@ -64,7 +76,7 @@ function indentCodeCompensation(raw, text) {
 /**
  * Tokenizer
  */
-export class Tokenizer {
+class Tokenizer {
   constructor(options) {
     this.options = options || defaults;
   }

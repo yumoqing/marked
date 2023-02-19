@@ -1,13 +1,7 @@
-import {
-  noopTest,
-  edit,
-  merge
-} from './helpers.js';
-
 /**
  * Block-Level Grammar
  */
-export const block = {
+const block = {
   newline: /^(?: *(?:\n|$))+/,
   code: /^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,
   fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?=\n|$)|$)/,
@@ -151,8 +145,9 @@ block.pedantic = merge({}, block.normal, {
 
 /**
  * Inline-Level Grammar
+ link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
  */
-export const inline = {
+const inline = {
   escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
   autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
   url: noopTest,
@@ -162,7 +157,7 @@ export const inline = {
     + '|^<\\?[\\s\\S]*?\\?>' // processing instruction, e.g. <?php ?>
     + '|^<![a-zA-Z]+\\s[\\s\\S]*?>' // declaration, e.g. <!DOCTYPE html>
     + '|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>', // CDATA section
-  link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
+  link: /^(?:![va]?)?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
   reflink: /^!?\[(label)\]\[(ref)\]/,
   nolink: /^!?\[(ref)\](?:\[\])?/,
   reflinkSearch: 'reflink|nolink(?!\\()',
@@ -268,7 +263,7 @@ inline.pedantic = merge({}, inline.normal, {
     endAst: /\*(?!\*)/g,
     endUnd: /_(?!_)/g
   },
-  link: edit(/^!?\[(label)\]\((.*?)\)/)
+  link: edit(/^(?:![va]?)?\[(label)\]\((.*?)\)/)
     .replace('label', inline._label)
     .getRegex(),
   reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/)

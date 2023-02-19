@@ -2,7 +2,7 @@
  * TextRenderer
  * returns only the textual part of the token
  */
-export class TextRenderer {
+class TextRenderer {
   // no need for block level renderers
   strong(text) {
     return text;
@@ -34,6 +34,14 @@ export class TextRenderer {
 
   image(href, title, text) {
     return '' + text;
+  }
+
+  video(href, title, text) {
+    return '' + text;
+  }
+
+  audio(href, title, text) {
+  	return '' + text;
   }
 
   br() {

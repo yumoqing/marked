@@ -1,7 +1,7 @@
 /**
  * Slugger generates header id
  */
-export class Slugger {
+class Slugger {
   constructor() {
     this.seen = {};
   }

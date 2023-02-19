@@ -1,15 +1,7 @@
-import { Renderer } from './Renderer.js';
-import { TextRenderer } from './TextRenderer.js';
-import { Slugger } from './Slugger.js';
-import { defaults } from './defaults.js';
-import {
-  unescape
-} from './helpers.js';
-
 /**
  * Parsing & Compiling
  */
-export class Parser {
+class Parser {
   constructor(options) {
     this.options = options || defaults;
     this.options.renderer = this.options.renderer || new Renderer();
@@ -223,7 +215,7 @@ export class Parser {
       // Run any renderer extensions
       if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[token.type]) {
         ret = this.options.extensions.renderers[token.type].call({ parser: this }, token);
-        if (ret !== false || !['escape', 'html', 'link', 'image', 'strong', 'em', 'codespan', 'br', 'del', 'text'].includes(token.type)) {
+        if (ret !== false || !['escape', 'html', 'link', 'image', 'video', 'audio', 'strong', 'em', 'codespan', 'br', 'del', 'text'].includes(token.type)) {
           out += ret || '';
           continue;
         }
@@ -246,6 +238,14 @@ export class Parser {
           out += renderer.image(token.href, token.title, token.text);
           break;
         }
+		case 'video': {
+          out += renderer.video(token.href, token.title, token.text);
+          break;
+		}
+		case 'audio': {
+          out += renderer.audio(token.href, token.title, token.text);
+          break;
+		}
         case 'strong': {
           out += renderer.strong(this.parseInline(token.tokens, renderer));
           break;

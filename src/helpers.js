@@ -13,7 +13,7 @@ const escapeReplacements = {
   "'": '&#39;'
 };
 const getEscapeReplacement = (ch) => escapeReplacements[ch];
-export function escape(html, encode) {
+function escape(html, encode) {
   if (encode) {
     if (escapeTest.test(html)) {
       return html.replace(escapeReplace, getEscapeReplacement);
@@ -32,7 +32,7 @@ const unescapeTest = /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig;
 /**
  * @param {string} html
  */
-export function unescape(html) {
+function unescape(html) {
   // explicitly match decimal, hex, and named HTML entities
   return html.replace(unescapeTest, (_, n) => {
     n = n.toLowerCase();
@@ -52,7 +52,7 @@ const caret = /(^|[^\[])\^/g;
  * @param {string | RegExp} regex
  * @param {string} opt
  */
-export function edit(regex, opt) {
+function edit(regex, opt) {
   regex = typeof regex === 'string' ? regex : regex.source;
   opt = opt || '';
   const obj = {
@@ -77,7 +77,7 @@ const originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
  * @param {string} base
  * @param {string} href
  */
-export function cleanUrl(sanitize, base, href) {
+function cleanUrl(sanitize, base, href) {
   if (sanitize) {
     let prot;
     try {
@@ -111,7 +111,7 @@ const domain = /^([^:]+:\/*[^/]*)[\s\S]*$/;
  * @param {string} base
  * @param {string} href
  */
-export function resolveUrl(base, href) {
+function resolveUrl(base, href) {
   if (!baseUrls[' ' + base]) {
     // we can ignore everything in base after the last slash of its path component,
     // but we might need to add _that_
@@ -140,9 +140,9 @@ export function resolveUrl(base, href) {
   }
 }
 
-export const noopTest = { exec: function noopTest() {} };
+const noopTest = { exec: function noopTest() {} };
 
-export function merge(obj) {
+function merge(obj) {
   let i = 1,
     target,
     key;
@@ -159,7 +159,7 @@ export function merge(obj) {
   return obj;
 }
 
-export function splitCells(tableRow, count) {
+function splitCells(tableRow, count) {
   // ensure that every cell-delimiting pipe has a space
   // before it to distinguish it from an escaped pipe
   const row = tableRow.replace(/\|/g, (match, offset, str) => {
@@ -203,7 +203,7 @@ export function splitCells(tableRow, count) {
  * @param {string} c
  * @param {boolean} invert Remove suffix of non-c chars instead. Default falsey.
  */
-export function rtrim(str, c, invert) {
+function rtrim(str, c, invert) {
   const l = str.length;
   if (l === 0) {
     return '';
@@ -227,7 +227,7 @@ export function rtrim(str, c, invert) {
   return str.slice(0, l - suffLen);
 }
 
-export function findClosingBracket(str, b) {
+function findClosingBracket(str, b) {
   if (str.indexOf(b[1]) === -1) {
     return -1;
   }
@@ -249,7 +249,7 @@ export function findClosingBracket(str, b) {
   return -1;
 }
 
-export function checkSanitizeDeprecation(opt) {
+function checkSanitizeDeprecation(opt) {
   if (opt && opt.sanitize && !opt.silent) {
     console.warn('marked(): sanitize and sanitizer parameters are deprecated since version 0.7.0, should not be used and will be removed in the future. Read more here: https://marked.js.org/#/USING_ADVANCED.md#options');
   }
@@ -260,7 +260,7 @@ export function checkSanitizeDeprecation(opt) {
  * @param {string} pattern
  * @param {number} count
  */
-export function repeatString(pattern, count) {
+function repeatString(pattern, count) {
   if (count < 1) {
     return '';
   }
